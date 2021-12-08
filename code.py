@@ -46,6 +46,7 @@ def check_balance(username):
 
 def up_balance(username):
     sum_to_up = input("Введіть суму, на яку хочете поповнити: ")
+    finish_sum = 0
     if sum_to_up.isdigit():
         sum_to_up = int(sum_to_up)
     else:
@@ -60,6 +61,7 @@ def up_balance(username):
 
 def down_balance(username):
     sum_to_down = input("Введіть суму, на яку хочете зняти: ")
+    finish_sum = 0
     if sum_to_down.isdigit():
         sum_to_down = int(sum_to_down)
     else:
