@@ -35,13 +35,17 @@ def add_new_user(username, password):
     with open("{}_balance.data".format(username), "w") as username_balance:
         username_balance.write("0")
     with open("{}_transactions.data".format(username), "a") as username_transactions:
-        username_transactions.write("Date of create")
+        username_transactions.write("Date of create/n")
 
 
 def check_balance(username):
     with open ("{}_balance.data".format(username), "r") as balance:
         result_to_print = json.load(balance)
         print(result_to_print)
+
+    with open("{}_transactions.data".format(username), "a") as transactions:
+        #json.dump("Check balance", transactions, indent=4)
+        transactions.write("Check balance/n")
 
 
 def up_balance(username):
@@ -59,6 +63,10 @@ def up_balance(username):
     with open("{}_balance.data".format(username), "w+") as balance:
         balance.write(str(finish_sum))
 
+    with open("{}_transactions.data".format(username), "a") as transactions:
+        transactions.write("Up balance/n")
+
+
 def down_balance(username):
     sum_to_down = input("Введіть суму, на яку хочете зняти: ")
     finish_sum = 0
@@ -74,8 +82,15 @@ def down_balance(username):
         else:
             print("Недостатньо грошей")
 
-    with open("{}_balance.data".format(username), "w+") as balance:
-        balance.write(str(finish_sum))
+    if remainder >= sum_to_down:
+        with open("{}_balance.data".format(username), "w") as balance:
+            balance.write(str(finish_sum))
+        with open("{}_transactions.data".format(username), "a") as transactions:
+            transactions.write("Get money/n")
+
+    else:
+        with open("{}_transactions.data".format(username), "a") as transactions:
+            transactions.write("Try to get money/n")
 
 
 
