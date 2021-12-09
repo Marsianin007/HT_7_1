@@ -70,27 +70,30 @@ def up_balance(username):
 def down_balance(username):
     sum_to_down = input("Введіть суму, на яку хочете зняти: ")
     finish_sum = 0
-    if sum_to_down.isdigit():
+    if sum_to_down.isdigit() :
         sum_to_down = int(sum_to_down)
     else:
-        print("Можна ввести лише число")
+        print("Можна ввести лише додатнє число")
 
-    with open("{}_balance.data".format(username), "r") as balance:
-        remainder = int(json.load(balance))
+    try:
+        with open("{}_balance.data".format(username), "r") as balance:
+            remainder = int(json.load(balance))
+            if remainder >= sum_to_down:
+                finish_sum = remainder - sum_to_down;
+            else:
+                print("Недостатньо грошей")
+
         if remainder >= sum_to_down:
-            finish_sum = remainder - sum_to_down;
+            with open("{}_balance.data".format(username), "w") as balance:
+                balance.write(str(finish_sum))
+            with open("{}_transactions.data".format(username), "a") as transactions:
+                transactions.write("Get money/n")
+
         else:
-            print("Недостатньо грошей")
-
-    if remainder >= sum_to_down:
-        with open("{}_balance.data".format(username), "w") as balance:
-            balance.write(str(finish_sum))
-        with open("{}_transactions.data".format(username), "a") as transactions:
-            transactions.write("Get money/n")
-
-    else:
-        with open("{}_transactions.data".format(username), "a") as transactions:
-            transactions.write("Try to get money/n")
+            with open("{}_transactions.data".format(username), "a") as transactions:
+                transactions.write("Try to get money/n")
+    except TypeError:
+        print("Невірний формат вводу")
 
 
 
@@ -101,7 +104,11 @@ def exit_from_menu():
 
 def start():
     username = input("Please, your login: ")
-    password = int(input("Please, your password: "))
+    password = input("Please, your password: ")
+    if password.isdigit():
+        password = int(password)
+    else:
+        None
     with open("users.data", "r") as users_file:
         users_file_py = json.load(users_file)
         check = False
@@ -124,6 +131,8 @@ def start():
                 down_balance(username)
             if operation == 4:
                 exit_from_menu()
+            else:
+                print("Перевірте номер операції")
 
         else:
             print("Пароль або логін введені неправильно")
